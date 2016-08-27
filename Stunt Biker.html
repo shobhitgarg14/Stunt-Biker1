@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<canvas id="canvas" width="1500" height="800"
+style="border:1px solid #000000;">
+</canvas>
+</head>
+<body onload="start()">
+<script>
+var plankX=900,plankY=700,plankspeed =5, dir =1,ctx,vX=0,vY=0,bikeX=0,bikeY=700,key=false,a=2;
+var bike = new Image();
+var plank = new Image();
+var background = new Image();
+function init(){
+var canvas = document.getElementById("canvas");
+var canvas = document.getElementById("canvas");
+ctx = canvas.getContext("2d");
+bike.src = "bike1.png";
+plank.src = "plank.png";
+background.src = "back2.png";
+}
+function update()
+{
+if(bikeX<800){
+bikeX += 2*vX;
+bikeY -= vY;
+}
+else{
+bikeX += 2*vX;
+bikeY = bikeY - vY;
+vY = vY - 1;
+}
+plankX += plankspeed*dir;
+if(plankX+80 > 1400)
+dir = -1;
+else if(plankX <900){
+dir =1;
+}
+}
+function Input(){
+window.addEventListener('keydown', function (e) {
+            key = e.keyCode;
+        })
+        window.addEventListener('keyup', function (e) {
+            key = false;
+        })
+		if (key && key == 39) {vX += a/30; vY += a/30;}
+    else if (key && key == 37) {vX -= a/30; vY -= a/30; }
+	else {
+	if(vX >0){vX -= a/30; vY -= a/30;}	
+	else if(vX<0){vX += a/30; vY += a/30;}
+	else {vX=0;vY=0;}
+}
+}
+function draw(){
+ctx.clearRect(0,0,1500,800);
+
+
+ctx.drawImage(background, 0, 0, 1500, 800);
+ctx.drawImage(bike, bikeX, bikeY, 100, 100);
+ctx.beginPath();
+      ctx.moveTo(0,800);
+      ctx.lineTo(900, 400);
+      ctx.lineWidth = 10;
+      ctx.stroke();
+ctx.drawImage(plank, plankX, plankY, 200, 100);
+if(bikeX >800 && bikeY+100 >600 && bikeX > plankX && bikeX < plankX+100){
+vX = 0;
+vY =0;
+a=0;
+plankspeed=0;
+g=0;
+}
+}
+function gameloop(){
+Input();
+update();
+draw();
+}
+function start(){
+init();
+setInterval(gameloop,34);
+}
+
+
+</script>
+ 
+</div>
+</body>
+</html>
